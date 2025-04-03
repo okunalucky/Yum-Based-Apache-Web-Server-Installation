@@ -1,0 +1,34 @@
+#linux command
+sudo yum update -y #install apache server
+sudo yum install httpd -y #install apache
+sudo systemctl start httpd  #start apache
+sudo systemctl enable httpd #enable apache
+
+
+#playbook
+---
+-name: Install apache server
+ host: your_server_group
+ become: yes
+
+ tasks:
+  -name: update server
+   yum:
+    name: "*"
+    state: latest 
+  
+  -name: install apache
+   yum:
+    name: httpd
+    state: latest
+
+  -name: start apache
+   ansible.builtin.systemd_service:
+    state: started
+    name: httpd
+
+
+  -name: enable apache
+   ansible.builtin.systemd_service:
+    state: enabled
+    name: httpd
